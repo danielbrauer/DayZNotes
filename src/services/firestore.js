@@ -1,26 +1,20 @@
 import { initializeApp } from "firebase/app";
-import { 
-    getFirestore,
-    query,
-    orderBy,
-    onSnapshot,
-    collection,
-    getDoc, 
-    getDocs, 
-    addDoc,
-    updateDoc,
-    doc, 
-    serverTimestamp, 
-    arrayUnion
+import { getAuth, signInAnonymously } from "firebase/auth";
+import {
+    addDoc, arrayUnion, collection, doc, getDoc,
+    getDocs, getFirestore, onSnapshot, orderBy, query, serverTimestamp, updateDoc
 } from "firebase/firestore";
-import { getAuth, signInAnonymously} from "firebase/auth";
 
 const firebaseConfig = {
-    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
-    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
-    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID
+  apiKey: "AIzaSyARW6d71u59L_NWUELfn5yi8kPi0jwwfsc",
+  authDomain: "dayznotes-cdcbc.firebaseapp.com",
+  projectId: "dayznotes-cdcbc",
+  storageBucket: "dayznotes-cdcbc.appspot.com",
+  messagingSenderId: "554593508248",
+  appId: "1:554593508248:web:483f7e9f4590f8357029ed"
 };
 
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app)
 
@@ -33,7 +27,7 @@ export const createGroceryList = (userName, userId) => {
     return addDoc(groceriesColRef, {
             created: serverTimestamp(),
             createdBy: userId,
-            users: [{ 
+            users: [{
                 userId: userId,
                 name: userName
             }]
@@ -59,7 +53,7 @@ export const streamGroceryListItems = (groceryListId, snapshot, error) => {
 export const addUserToGroceryList = (userName, groceryListId, userId) => {
     const groceryDocRef = doc(db, 'groceryLists', groceryListId)
     return updateDoc(groceryDocRef, {
-            users: arrayUnion({ 
+            users: arrayUnion({
                 userId: userId,
                 name: userName
             })
