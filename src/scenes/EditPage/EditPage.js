@@ -20,11 +20,9 @@ function EditPage(props) {
                 <p>Add timers when you bury things.</p>
             </header>
             <div className="edit-container">
-                <div className="add-timer-column">
-                    <AddTimer {...{pageId, userId}}></AddTimer>
-                </div>
                 <div className="list-column">
                     <TimerList {...{pageId}}></TimerList>
+                    <AddTimer {...{pageId, userId}}></AddTimer>
                 </div>
             </div>
             <footer className="app-footer">

@@ -49,15 +49,16 @@ export const addUserToPage = (userName, pageId, userId) => {
         });
 };
 
-export const addTimer = (item, pageId, userId) => {
+export const addTimer = (timerDesc, timerLength, pageId, userId) => {
     return getTimers(pageId)
         .then(querySnapshot => querySnapshot.docs)
-        .then(timers => timers.find(timer => timer.data().name.toLowerCase() === item.toLowerCase()))
+        .then(timers => timers.find(timer => timer.data().name.toLowerCase() === timerDesc.toLowerCase()))
         .then( (matchingItem) => {
             if (!matchingItem) {
                 const itemsColRef = collection(db, 'pages', pageId, 'timers')
                 return addDoc(itemsColRef, {
-                        name: item,
+                        name: timerDesc,
+                        length: timerLength,
                         created: serverTimestamp(),
                         createdBy: userId
                     });

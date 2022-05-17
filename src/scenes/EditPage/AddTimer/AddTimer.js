@@ -15,12 +15,14 @@ function AddTimer(props) {
         setError(null);
 
         const timerDesc = document.addTimerForm.timerDesc.value;
+        const timerLength = document.addTimerForm.timerLength.value;
+
         if (!timerDesc) {
             setError('grocery-item-desc-req');
             return;
         }
 
-        FirestoreService.addTimer(timerDesc, pageId, userId)
+        FirestoreService.addTimer(timerDesc, timerLength, pageId, userId)
             .then(() => document.addTimerForm.reset())
             .catch(reason => {
                 if (reason.message === 'duplicate-item-error') {
@@ -33,8 +35,10 @@ function AddTimer(props) {
 
     return (
         <form name="addTimerForm">
-            <h3>Items buried</h3>
             <input type="text" name="timerDesc" />
+            expires in
+            <input type="number" class="length-field" name="timerLength" value='12' />
+            days
             <button type="submit" onClick={addTimer}>Add</button>
             <ErrorMessage errorCode={error}></ErrorMessage>
         </form>
