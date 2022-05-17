@@ -15,7 +15,7 @@ function EditPage(props) {
     return (
         <div>
             <header className="app-header">
-                <h1>Live Grocery List</h1>
+                <h1>DayZ Notes Page</h1>
                 <p><strong>Hi {user}!</strong></p>
                 <p>Add timers when you bury things.</p>
             </header>
