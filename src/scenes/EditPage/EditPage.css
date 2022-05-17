@@ -4,7 +4,7 @@
   flex-wrap: wrap;
 }
 
-.add-item-column {
+.add-timer-column {
   min-width: 300px;
   width: 25%;
   background-color: rgb(247, 237, 202);

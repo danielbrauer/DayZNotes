@@ -11,9 +11,9 @@ export const authenticateAnonymously = () => {
     return signInAnonymously(getAuth(app));
 };
 
-export const createGroceryList = (userName, userId) => {
-    const groceriesColRef = collection(db, 'groceryLists')
-    return addDoc(groceriesColRef, {
+export const createPage = (userName, userId) => {
+    const pagesColRef = collection(db, 'pages')
+    return addDoc(pagesColRef, {
             created: serverTimestamp(),
             createdBy: userId,
             users: [{
@@ -23,25 +23,25 @@ export const createGroceryList = (userName, userId) => {
         });
 };
 
-export const getGroceryList = (groceryListId) => {
-    const groceryDocRef = doc(db, 'groceryLists', groceryListId)
-    return getDoc(groceryDocRef);
+export const getPage = (pageId) => {
+    const pageDocRef = doc(db, 'pages', pageId)
+    return getDoc(pageDocRef);
 };
 
-export const getGroceryListItems = (groceryListId) => {
-    const itemsColRef = collection(db, 'groceryLists', groceryListId, 'items')
-    return getDocs(itemsColRef)
+export const getTimers = (pageId) => {
+    const timersColRef = collection(db, 'pages', pageId, 'timers')
+    return getDocs(timersColRef)
 }
 
-export const streamGroceryListItems = (groceryListId, snapshot, error) => {
-    const itemsColRef = collection(db, 'groceryLists', groceryListId, 'items')
-    const itemsQuery = query(itemsColRef, orderBy('created'))
-    return onSnapshot(itemsQuery, snapshot, error);
+export const streamPageTimers = (pageId, snapshot, error) => {
+    const timersColRef = collection(db, 'pages', pageId, 'timers')
+    const timersQuery = query(timersColRef, orderBy('created'))
+    return onSnapshot(timersQuery, snapshot, error);
 };
 
-export const addUserToGroceryList = (userName, groceryListId, userId) => {
-    const groceryDocRef = doc(db, 'groceryLists', groceryListId)
-    return updateDoc(groceryDocRef, {
+export const addUserToPage = (userName, pageId, userId) => {
+    const pageDocRef = doc(db, 'pages', pageId)
+    return updateDoc(pageDocRef, {
             users: arrayUnion({
                 userId: userId,
                 name: userName
@@ -49,13 +49,13 @@ export const addUserToGroceryList = (userName, groceryListId, userId) => {
         });
 };
 
-export const addGroceryListItem = (item, groceryListId, userId) => {
-    return getGroceryListItems(groceryListId)
+export const addTimer = (item, pageId, userId) => {
+    return getTimers(pageId)
         .then(querySnapshot => querySnapshot.docs)
-        .then(groceryListItems => groceryListItems.find(groceryListItem => groceryListItem.data().name.toLowerCase() === item.toLowerCase()))
+        .then(timers => timers.find(timer => timer.data().name.toLowerCase() === item.toLowerCase()))
         .then( (matchingItem) => {
             if (!matchingItem) {
-                const itemsColRef = collection(db, 'groceryLists', groceryListId, 'items')
+                const itemsColRef = collection(db, 'pages', pageId, 'timers')
                 return addDoc(itemsColRef, {
                         name: item,
                         created: serverTimestamp(),

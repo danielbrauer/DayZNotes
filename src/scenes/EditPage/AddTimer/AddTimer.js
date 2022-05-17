@@ -1,27 +1,27 @@
 import React, { useState } from 'react';
-import './AddItem.css';
+import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage';
 import * as FirestoreService from '../../../services/firestore';
-import ErrorMessage from '../../../components/ErrorMessage/ErrorMessage'
+import './AddTimer.css';
 
 
-function AddItem(props) {
+function AddTimer(props) {
 
-    const { groceryListId, userId } = props;
+    const { pageId, userId } = props;
 
     const [error, setError] = useState('');
 
-    function addItem(e) {
+    function addTimer(e) {
         e.preventDefault();
         setError(null);
 
-        const itemDesc = document.addItemForm.itemDesc.value;
-        if (!itemDesc) {
+        const timerDesc = document.addTimerForm.timerDesc.value;
+        if (!timerDesc) {
             setError('grocery-item-desc-req');
             return;
         }
 
-        FirestoreService.addGroceryListItem(itemDesc, groceryListId, userId)
-            .then(() => document.addItemForm.reset())
+        FirestoreService.addTimer(timerDesc, pageId, userId)
+            .then(() => document.addTimerForm.reset())
             .catch(reason => {
                 if (reason.message === 'duplicate-item-error') {
                     setError(reason.message);
@@ -32,13 +32,13 @@ function AddItem(props) {
     }
 
     return (
-        <form name="addItemForm">
-            <h3>I want...</h3>
-            <input type="text" name="itemDesc" />
-            <button type="submit" onClick={addItem}>Add</button>
+        <form name="addTimerForm">
+            <h3>Items buried</h3>
+            <input type="text" name="timerDesc" />
+            <button type="submit" onClick={addTimer}>Add</button>
             <ErrorMessage errorCode={error}></ErrorMessage>
         </form>
     );
 }
 
-export default AddItem;
+export default AddTimer;
