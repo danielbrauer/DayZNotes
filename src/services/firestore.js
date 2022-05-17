@@ -1,21 +1,10 @@
-import { initializeApp } from "firebase/app";
 import { getAuth, signInAnonymously } from "firebase/auth";
 import {
     addDoc, arrayUnion, collection, doc, getDoc,
     getDocs, getFirestore, onSnapshot, orderBy, query, serverTimestamp, updateDoc
 } from "firebase/firestore";
+import app from './firebase';
 
-const firebaseConfig = {
-  apiKey: "AIzaSyARW6d71u59L_NWUELfn5yi8kPi0jwwfsc",
-  authDomain: "dayznotes-cdcbc.firebaseapp.com",
-  projectId: "dayznotes-cdcbc",
-  storageBucket: "dayznotes-cdcbc.appspot.com",
-  messagingSenderId: "554593508248",
-  appId: "1:554593508248:web:483f7e9f4590f8357029ed"
-};
-
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
 const db = getFirestore(app)
 
 export const authenticateAnonymously = () => {
