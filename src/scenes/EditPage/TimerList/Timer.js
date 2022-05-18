@@ -3,6 +3,7 @@ import 'dayjs/locale/de';
 import calendar from 'dayjs/plugin/calendar';
 import updateLocale from 'dayjs/plugin/updateLocale';
 import React from "react";
+import * as FirestoreService from '../../../services/firestore';
 
 dayjs.extend(calendar)
 dayjs.extend(updateLocale)
@@ -19,12 +20,15 @@ dayjs.updateLocale('de', {
   })
 
 function Timer(props) {
-    const { timer, i } = props
-
+    const { timerDoc, pageId } = props
+    const timer = timerDoc.data()
     if (!timer.created) return 'adding'
 
     const expiryString = dayjs(timer.created.toDate()).add(timer.length, 'days').calendar()
-    return <div key={i}>{timer.name} expires {expiryString}</div>;
+    return (<div>
+        {timer.name} expires {expiryString}
+        <button onClick={() => FirestoreService.removeTimer(pageId, timerDoc.id)}>Remove</button>
+    </div>);
 }
 
 export default Timer;

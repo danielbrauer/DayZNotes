@@ -15,8 +15,7 @@ function TimerList(props) {
     useEffect(() => {
         const unsubscribe = FirestoreService.streamPageTimers(pageId,
             (querySnapshot) => {
-                const updatedTimers =
-                querySnapshot.docs.map(docSnapshot => docSnapshot.data());
+                const updatedTimers = querySnapshot.docs
                 setTimers(updatedTimers);
             },
             (error) => setError('grocery-list-item-get-fail')
@@ -24,8 +23,7 @@ function TimerList(props) {
         return unsubscribe;
     }, [pageId, setTimers]);
 
-    const timerElements = timers.map((timer, i) => <Timer {...{ timer, i }} />)
-
+    const timerElements = timers.map(timerDoc => <Timer key={timerDoc.id} {...{pageId, timerDoc}} />)
     return (
         <div>
             <ErrorMessage errorCode={error}></ErrorMessage>

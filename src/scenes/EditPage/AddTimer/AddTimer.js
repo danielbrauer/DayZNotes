@@ -37,7 +37,7 @@ function AddTimer(props) {
         <form name="addTimerForm">
             <input type="text" name="timerDesc" />
             expires in
-            <input type="number" class="length-field" name="timerLength" value='12' />
+            <input type="number" className="length-field" name="timerLength" defaultValue='12' />
             days
             <button type="submit" onClick={addTimer}>Add</button>
             <ErrorMessage errorCode={error}></ErrorMessage>
