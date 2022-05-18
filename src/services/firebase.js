@@ -5,12 +5,12 @@ import { initializeApp } from "firebase/app";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyARW6d71u59L_NWUELfn5yi8kPi0jwwfsc",
-  authDomain: "dayznotes-cdcbc.firebaseapp.com",
-  projectId: "dayznotes-cdcbc",
-  storageBucket: "dayznotes-cdcbc.appspot.com",
-  messagingSenderId: "554593508248",
-  appId: "1:554593508248:web:483f7e9f4590f8357029ed"
+  apiKey: "AIzaSyDRzEEs4bj74KQgoYy96_RFaqvQbJN6B3Q",
+  authDomain: "buriedfordayz.firebaseapp.com",
+  projectId: "buriedfordayz",
+  storageBucket: "buriedfordayz.appspot.com",
+  messagingSenderId: "855214667324",
+  appId: "1:855214667324:web:c5c17f641dcbde87c63539"
 };
 
 // Initialize Firebase
