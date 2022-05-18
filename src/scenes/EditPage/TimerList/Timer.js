@@ -1,30 +1,28 @@
 import dayjs from 'dayjs';
-import 'dayjs/locale/de';
-import calendar from 'dayjs/plugin/calendar';
-import updateLocale from 'dayjs/plugin/updateLocale';
-import React from "react";
+import duration from 'dayjs/plugin/duration';
+import React, { useEffect, useReducer } from "react";
 import * as FirestoreService from '../../../services/firestore';
 
-dayjs.extend(calendar)
-dayjs.extend(updateLocale)
-dayjs.locale('de')
-dayjs.updateLocale('de', {
-    calendar: {
-      lastDay: '[yesterday at] H:mm',
-      sameDay: '[today at] H:mm',
-      nextDay: '[tomorrow at] H:mm',
-      lastWeek: '[last] dddd [at] H:mm',
-      nextWeek: 'dddd [at] H:mm',
-      sameElse: 'D.M.YY [at] H:mm'
-    }
-  })
+dayjs.extend(duration)
 
 function Timer(props) {
     const { timerDoc, pageId } = props
-    const timer = timerDoc.data()
-    if (!timer.created) return 'adding'
 
-    const expiryString = dayjs(timer.created.toDate()).add(timer.length, 'days').calendar()
+    const [, forceUpdate] = useReducer(x => x + 1, 0)
+
+    const timer = timerDoc.data()
+
+    const expiryDate = dayjs(timer.created.toDate()).add(timer.length, 'days')
+    const expiryString = dayjs.duration(expiryDate.diff(dayjs())).format('DD[D] HH:mm:ss')
+
+    useEffect(() => {
+        const interval = setInterval(() => forceUpdate(), 1000)
+        return () => {
+            clearInterval(interval)
+        }
+    }, [])
+
+    if (!timer.created) return 'adding'
     return (<div>
         {timer.name} expires {expiryString}
         <button onClick={() => FirestoreService.removeTimer(pageId, timerDoc.id)}>Remove</button>
