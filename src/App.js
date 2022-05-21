@@ -18,12 +18,13 @@ function App() {
 
   // Use an effect to authenticate and load the grocery list from the database
   useEffect(() => {
-    FirestoreService.authenticateAnonymously()
-    .then(userCredential => {
-      setUserId(userCredential.user.uid);
-      if (pageId) {
-        FirestoreService.getPage(pageId)
-          .then(page => {
+    async function setup() {
+      try {
+        const userCredential = await FirestoreService.authenticateAnonymously()
+        setUserId(userCredential.user.uid);
+        if (pageId) {
+          try {
+            const page = await FirestoreService.getPage(pageId)
             if (page.exists) {
               setError(null);
               setPage(page.data());
@@ -31,11 +32,17 @@ function App() {
               setError('grocery-list-not-found');
               setPageId();
             }
-          })
-          .catch(() => setError('grocery-list-get-fail'));
+          }
+          catch (error) {
+            setError('grocery-list-get-fail');
+          }
+        }
       }
-    })
-    .catch(() => setError('anonymous-auth-failed'));
+      catch (error) {
+        setError('anonymous-auth-failed')
+      }
+    }
+    setup()
   }, [pageId, setPageId]);
 
   function onPageCreate(pageId, userName) {
@@ -49,11 +56,15 @@ function App() {
     setUser();
   }
 
-  function onSelectUser(userName) {
+  async function onSelectUser(userName) {
     setUser(userName);
-    FirestoreService.getPage(pageId)
-      .then(updatedPage => setPage(updatedPage.data()))
-      .catch(() => setError('grocery-list-get-fail'));
+    try {
+      const updatedPage = await FirestoreService.getPage(pageId)
+      setPage(updatedPage.data())
+    }
+    catch (error) {
+      setError('grocery-list-get-fail')
+    }
   }
 
   // render a scene based on the current state
