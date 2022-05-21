@@ -26,6 +26,7 @@ function Timer(props) {
 
     return (<div>
         {timer.name} expires {expiryString}
+        <button onClick={() => FirestoreService.resetTimer(pageId, timerDoc.id)}>Reset</button>
         <button onClick={() => FirestoreService.removeTimer(pageId, timerDoc.id)}>Remove</button>
     </div>);
 }

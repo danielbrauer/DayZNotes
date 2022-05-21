@@ -65,6 +65,13 @@ export const addTimer = async (timerDesc, timerLength, pageId, userId) => {
     throw new Error('duplicate-item-error');
 };
 
+export const resetTimer = async (pageId, timerId) => {
+    const timerDocRef = doc(db, 'pages', pageId, 'timers', timerId)
+    return updateDoc(timerDocRef, {
+            created: serverTimestamp()
+        })
+};
+
 export const removeTimer = async (pageId, timerId) => {
     await deleteDoc(doc(db, 'pages', pageId, 'timers', timerId));
 };
