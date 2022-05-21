@@ -12,9 +12,6 @@ function Timer(props) {
 
     const timer = timerDoc.data()
 
-    const expiryDate = dayjs(timer.created.toDate()).add(timer.length, 'days')
-    const expiryString = dayjs.duration(expiryDate.diff(dayjs())).format('DD[D] HH:mm:ss')
-
     useEffect(() => {
         const interval = setInterval(() => forceUpdate(), 1000)
         return () => {
@@ -23,6 +20,10 @@ function Timer(props) {
     }, [])
 
     if (!timer.created) return 'adding'
+
+    const expiryDate = dayjs(timer.created.toDate()).add(timer.length, 'days')
+    const expiryString = dayjs.duration(expiryDate.diff(dayjs())).format('DD[D] HH:mm:ss')
+
     return (<div>
         {timer.name} expires {expiryString}
         <button onClick={() => FirestoreService.removeTimer(pageId, timerDoc.id)}>Remove</button>
